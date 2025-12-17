@@ -14,6 +14,7 @@ base_url = "https://apigw.byma.com.ar"
 client_id = "0oauyi61ssGJ1K1av697"
 client_secret = "bmZk2WZPWJ0qoCVMvUcaXN4qXjyKx2_DXXcfGYxkbFR0honYq7A43lGkrIwKyhJt"
 
+st.set_page_config(layout="wide", initial_sidebar_state="collapsed")
 st.title("Buscador de Instrumentos")
 
 symbol = st.text_input("Ingrese el symbol").upper().strip()
