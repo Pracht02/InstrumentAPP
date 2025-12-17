@@ -1,0 +1,38 @@
+# .github/workflows/update-csv.yml
+
+name: Update instrumentos.csv
+
+on:
+  schedule:
+    - cron: '0 9 * * 1-5'  # Lunes a Viernes 9:00 UTC (6:00 ARG)
+  workflow_dispatch:  # Permite ejecutar manual
+
+jobs:
+  update:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+
+      - name: Install dependencies
+        run: pip install pandas requests
+
+      - name: Run script to generate CSV
+        env:
+          CLIENT_ID: ${{ secrets.CLIENT_ID }}
+          CLIENT_SECRET: ${{ secrets.CLIENT_SECRET }}
+        run: |
+          python generate_csv.py
+
+      - name: Commit and push if changed
+        run: |
+          git config user.name "github-actions"
+          git config user.email "actions@github.com"
+          git add instrumentos.csv
+          git diff --quiet && exit 0
+          git commit -m "Update instrumentos.csv $(date +'%Y-%m-%d')"
+          git push
