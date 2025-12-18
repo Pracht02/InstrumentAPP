@@ -31,8 +31,9 @@ df = df.rename(columns={
 
 # Regla Segmento
 df['Segmento'] = df.apply(
-    lambda row: 'SISTACO' if row['Segmento'] == 'CT' and row['Block'] == 1
-    else 'PPT' if row['Segmento'] == 'CT' and row['Block'] == 0
+    lambda row: 'PPT' if (row['Segmento'] == 'CT' and row['Block'] == 1 and row['Tipo instrumento'] == '01-ACCIONES PRIVADAS')
+    else 'SISTACO' if (row['Segmento'] == 'CT' and row['Block'] == 1)
+    else 'PPT' if (row['Segmento'] == 'CT' and row['Block'] == 0)
     else 'SENEBI' if row['Segmento'] == 'SB'
     else row['Segmento'],
     axis=1
@@ -41,23 +42,32 @@ df['Segmento'] = df.apply(
 # Regla Plazo
 df['Plazo'] = df['Plazo'].replace({1: 'CI', 2: '24hs'})
 
-# Regla Estado (nuevo)
+# Regla Estado
 df['Estado'] = df['Estado'].replace({
     0: 'Activa',
     1: 'Suspendida',
     2: 'Halted'
 })
 
-symbol = st.text_input("Ingrese un Ticker").upper().strip()
+search_type = st.selectbox("Buscar por:", ["Ticker", "CVSA ID", "ISIN"])
+query = st.text_input("Ingrese el valor").upper().strip()
 
-if symbol:
-    matches = df[df['Ticker'] == symbol]
+if query:
+    if search_type == "Ticker":
+        matches = df[df['Ticker'] == query]
+    elif search_type == "ISIN":
+        matches = df[df['ISIN'] == query]
+    else:  # CVSA ID
+        matches = df[df['CVSA ID'] == query]
+
     if not matches.empty:
-        cvsaid = matches['CVSA ID'].iloc[0]
-        resultados = df[df['CVSA ID'] == cvsaid]
+        if search_type != "CVSA ID":
+            cvsaid = matches['CVSA ID'].iloc[0]
+            resultados = df[df['CVSA ID'] == cvsaid]
+        else:
+            resultados = matches
         st.dataframe(resultados, use_container_width=True)
     else:
-        st.write("Symbol no encontrado")
+        st.write("No encontrado")
 else:
-
-    st.info("Ingrese un Ticker")
+    st.info("Ingrese un valor para buscar")
