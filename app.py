@@ -54,9 +54,9 @@ query = st.text_input("Ingrese Ticker, ISIN o CVSA ID").upper().strip()
 if query:
     # Busca en las 3 columnas
     matches = df[
-        (df['Ticker'] == query) |
-        (df['ISIN'] == query) |
-        (df['CVSA ID'] == query)
+    (df['Ticker'] == query) |
+    (df['ISIN'] == query) |
+    (df['CVSA ID'].astype(str) == query)
     ]
 
     if not matches.empty:
