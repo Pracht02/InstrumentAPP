@@ -54,10 +54,12 @@ def get_instrument_rf(token):
             dfs[f"{group}_{market}"] = pd.DataFrame(data)
     return dfs
 
-token = get_token()
-equity = get_instrument_equity(token)
-rf = get_instrument_rf(token)
-columns = ['symbol', 'CVSAId', 'category', 'market', 'currency', 'settlPeriod', 'lotSize', 'minimumSize', 'block', 'isin', 'instrumentStatus']
-all_dfs = list(equity.values()) + list(rf.values())
-combined_df = pd.concat(all_dfs, ignore_index=True)[columns]
-combined_df.to_csv("instrumentos.csv", index=False)
+if __name__ == "__main__":
+    token = get_token()
+    equity = get_instrument_equity(token)
+    rf = get_instrument_rf(token)
+    columns = ['symbol', 'CVSAId', 'category', 'market', 'currency', 'settlPeriod', 'lotSize', 'minimumSize', 'block', 'isin', 'instrumentStatus']
+    all_dfs = list(equity.values()) + list(rf.values())
+    combined_df = pd.concat(all_dfs, ignore_index=True)[columns]
+    combined_df.to_csv("instrumentos.csv", index=False)
+    print("CSV generado exitosamente")

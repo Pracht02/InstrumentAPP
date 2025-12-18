@@ -12,7 +12,6 @@ st.set_page_config(layout="wide")
 
 st.title("Buscador de Instrumentos BYMA")
 
-# Carga datos desde CSV actualizado diario por GitHub Actions
 df = pd.read_csv("instrumentos.csv")
 
 symbol = st.text_input("Ingrese el symbol").upper().strip()
