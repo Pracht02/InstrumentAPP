@@ -49,25 +49,21 @@ df['Estado'] = df['Estado'].replace({
     2: 'Halted'
 })
 
-search_type = st.selectbox("Buscar por:", ["Ticker", "CVSA ID", "ISIN"])
-query = st.text_input("Ingrese el valor").upper().strip()
+query = st.text_input("Ingrese Ticker, ISIN o CVSA ID").upper().strip()
 
 if query:
-    if search_type == "Ticker":
-        matches = df[df['Ticker'] == query]
-    elif search_type == "ISIN":
-        matches = df[df['ISIN'] == query]
-    else:  # CVSA ID
-        matches = df[df['CVSA ID'] == query]
+    # Busca en las 3 columnas
+    matches = df[
+        (df['Ticker'] == query) |
+        (df['ISIN'] == query) |
+        (df['CVSA ID'] == query)
+    ]
 
     if not matches.empty:
-        if search_type != "CVSA ID":
-            cvsaid = matches['CVSA ID'].iloc[0]
-            resultados = df[df['CVSA ID'] == cvsaid]
-        else:
-            resultados = matches
+        cvsaid = matches['CVSA ID'].iloc[0]
+        resultados = df[df['CVSA ID'] == cvsaid]
         st.dataframe(resultados, use_container_width=True)
     else:
         st.write("No encontrado")
 else:
-    st.info("Ingrese un valor para buscar")
+    st.info("Ingrese Ticker, ISIN o CVSA ID para buscar")
