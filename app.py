@@ -10,7 +10,7 @@ import pandas as pd
 
 st.set_page_config(layout="wide")
 
-st.title("Buscador de Instrumentos BYMA")
+st.title("Buscador de Especies")
 
 df = pd.read_csv("instrumentos.csv")
 
@@ -48,7 +48,7 @@ df['Estado'] = df['Estado'].replace({
     2: 'Halted'
 })
 
-symbol = st.text_input("Ingrese el symbol").upper().strip()
+symbol = st.text_input("Ingrese un Ticker").upper().strip()
 
 if symbol:
     matches = df[df['Ticker'] == symbol]
@@ -59,4 +59,5 @@ if symbol:
     else:
         st.write("Symbol no encontrado")
 else:
-    st.info("Ingrese un symbol para buscar")
+
+    st.info("Ingrese un Ticker")
