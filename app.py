@@ -12,7 +12,8 @@ st.set_page_config(layout="wide")
 
 st.title("Buscador de Especies")
 
-df = pd.read_csv("instrumentos.csv")
+# Carga CSV directo desde GitHub (sin rebuild en Render)
+df = pd.read_csv("https://raw.githubusercontent.com/Pracht02/InstrumentAPP/main/instrumentos.csv")
 
 # Renombrar columnas
 df = df.rename(columns={
@@ -66,4 +67,5 @@ if query:
     else:
         st.write("No encontrado")
 else:
+
     st.info("Ingrese Ticker, ISIN o CVSA ID para buscar")
