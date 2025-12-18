@@ -13,7 +13,7 @@ jobs:
     steps:
       - uses: actions/checkout@v4
         with:
-          fetch-depth: 0  # Soluciona detección de cambios
+          fetch-depth: 0
 
       - name: Set up Python
         uses: actions/setup-python@v5
@@ -28,23 +28,15 @@ jobs:
           CLIENT_ID: ${{ secrets.CLIENT_ID }}
           CLIENT_SECRET: ${{ secrets.CLIENT_SECRET }}
         run: python generate_csv.py
-        
-      - name: Configure Git
-        run: |
-          git config user.name "github-actions"
-          git config user.email "actions@github.com"
 
-      - uses: adrianhall/github-actions-workflow-push@v1
-        with:
-          github_token: ${{ secrets.GITHUB_TOKEN }}
-          branch: main
-          files: instrumentos.csv
-          message: "Update instrumentos.csv $(date +'%Y-%m-%d')"
       - name: Commit and push if changed
         run: |
           git config user.name "github-actions"
           git config user.email "actions@github.com"
           git add instrumentos.csv
-          git diff --quiet && echo "No changes" && exit 0
+          if git diff --staged --quiet; then
+            echo "No changes to commit"
+            exit 0
+          fi
           git commit -m "Update instrumentos.csv $(date +'%Y-%m-%d')"
           git push
