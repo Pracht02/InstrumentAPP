@@ -72,8 +72,12 @@ if query:
         with col2:
             st.write(f"**Descripción:** {first_row.get('securityDescription', 'N/A')}")
 
+        # Ocultar securityDescription e issuer de la tabla
+        resultados = resultados.drop(columns=['issuer', 'securityDescription'], errors='ignore')
+
         st.dataframe(resultados, use_container_width=True)
     else:
         st.write("No encontrado")
 else:
     st.info("Ingrese Ticker, ISIN o CVSA ID para buscar")
+
