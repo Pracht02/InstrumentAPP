@@ -123,10 +123,10 @@ if __name__ == "__main__":
 
     # DataFrame final: instruments + novedades
     df_final = pd.concat([df_instr, df_novedades], ignore_index=True)
-    #drop securityId asi no aparece en la app
-    df_final = df_final.drop(columns=['securityId'], errors='ignore')
+    
     # Guardar CSV
     df_final.to_csv("instrumentos.csv", index=False)
     print("CSV generado exitosamente")
+
 
 
