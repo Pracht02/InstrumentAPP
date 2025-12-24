@@ -66,13 +66,14 @@ if query:
             st.write(f"**Descripción:** {first_row.get('securityDescription', 'N/A')}")
 
         # Ocultar columnas issuer, securityDescription y Tipo instrumento
-        resultados = resultados.drop(columns=['securityId', 'issuer', 'securityDescription', 'Tipo instrumento'], errors='ignore')
+        resultados = resultados.drop(columns=['issuer', 'securityDescription', 'Tipo instrumento'], errors='ignore')
 
         st.dataframe(resultados, use_container_width=True)
     else:
         st.write("No encontrado")
 else:
     st.info("Ingrese Ticker, ISIN o CVSA ID para buscar")
+
 
 
 
