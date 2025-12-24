@@ -27,6 +27,7 @@ df = df.rename(columns={
     'minimumSize': 'CM',
     'block': 'Block',
     'isin': 'ISIN',
+    'tickPriceId': 'Tick de precio',
     'instrumentStatus': 'Estado'
 })
 
@@ -80,4 +81,5 @@ if query:
         st.write("No encontrado")
 else:
     st.info("Ingrese Ticker, ISIN o CVSA ID para buscar")
+
 
