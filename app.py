@@ -10,15 +10,15 @@ import pandas as pd
 
 st.set_page_config(layout="wide")
 
-st.title("Buscador de Especies")
+st.title("Buscador de Instrumentos BYMA")
 
-# Carga CSV directo desde GitHub (sin rebuild en Render)
 df = pd.read_csv("https://raw.githubusercontent.com/Pracht02/InstrumentAPP/main/instrumentos.csv")
 
 # Renombrar columnas
 df = df.rename(columns={
     'symbol': 'Ticker',
     'CVSAId': 'CVSA ID',
+    'category': 'Tipo instrumento',  # Temporal para usar
     'market': 'Segmento',
     'currency': 'Moneda',
     'settlPeriod': 'Plazo',
@@ -26,12 +26,10 @@ df = df.rename(columns={
     'minimumSize': 'CM',
     'block': 'Block',
     'isin': 'ISIN',
-    'category': 'Tipo instrumento',
-    'tickPriceId': 'Tick de precio',
     'instrumentStatus': 'Estado'
 })
 
-# Regla Segmento
+# Reglas existentes...
 df['Segmento'] = df.apply(
     lambda row: 'PPT' if (row['Segmento'] == 'CT' and row['Block'] == 1 and row['Tipo instrumento'] == '01-ACCIONES PRIVADAS')
     else 'SISTACO' if (row['Segmento'] == 'CT' and row['Block'] == 1)
@@ -41,15 +39,8 @@ df['Segmento'] = df.apply(
     axis=1
 )
 
-# Regla Plazo
 df['Plazo'] = df['Plazo'].replace({1: 'CI', 2: '24hs'})
-
-# Regla Estado
-df['Estado'] = df['Estado'].replace({
-    0: 'Activa',
-    1: 'Suspendida',
-    2: 'Halted'
-})
+df['Estado'] = df['Estado'].replace({0: 'Activa', 1: 'Suspendida', 2: 'Halted'})
 
 query = st.text_input("Ingrese Ticker, ISIN o CVSA ID").upper().strip()
 
@@ -64,23 +55,25 @@ if query:
         cvsaid = matches['CVSA ID'].iloc[0]
         resultados = df[df['CVSA ID'] == cvsaid]
 
-        # Mostrar securityDescription e issuer (primera fila)
         first_row = resultados.iloc[0]
         st.subheader("Descripción del instrumento")
-        col1, col2 = st.columns(2)
+        col1, col2, col3 = st.columns(3)
         with col1:
             st.write(f"**Emisor:** {first_row.get('issuer', 'N/A')}")
         with col2:
+            st.write(f"**Tipo:** {first_row.get('Tipo instrumento', 'N/A')}")
+        with col3:
             st.write(f"**Descripción:** {first_row.get('securityDescription', 'N/A')}")
 
-        # Ocultar securityDescription e issuer de la tabla
-        resultados = resultados.drop(columns=['issuer', 'securityDescription'], errors='ignore')
+        # Ocultar columnas issuer, securityDescription y Tipo instrumento
+        resultados = resultados.drop(columns=['securityId', 'issuer', 'securityDescription', 'Tipo instrumento'], errors='ignore')
 
         st.dataframe(resultados, use_container_width=True)
     else:
         st.write("No encontrado")
 else:
     st.info("Ingrese Ticker, ISIN o CVSA ID para buscar")
+
 
 
 
