@@ -19,7 +19,6 @@ df = pd.read_csv("https://raw.githubusercontent.com/Pracht02/InstrumentAPP/main/
 df = df.rename(columns={
     'symbol': 'Ticker',
     'CVSAId': 'CVSA ID',
-    'category': 'Tipo instrumento',
     'market': 'Segmento',
     'currency': 'Moneda',
     'settlPeriod': 'Plazo',
@@ -27,6 +26,7 @@ df = df.rename(columns={
     'minimumSize': 'CM',
     'block': 'Block',
     'isin': 'ISIN',
+    'category': 'Tipo instrumento',
     'tickPriceId': 'Tick de precio',
     'instrumentStatus': 'Estado'
 })
@@ -81,5 +81,6 @@ if query:
         st.write("No encontrado")
 else:
     st.info("Ingrese Ticker, ISIN o CVSA ID para buscar")
+
 
 
