@@ -68,7 +68,7 @@ if __name__ == "__main__":
         list(get_instrument_equity(instr_token).values()) +
         list(get_instrument_rf(instr_token).values()),
         ignore_index=True
-    )[ ['securityId','symbol', 'CVSAId', 'category', 'market', 'currency', 'settlPeriod', 'lotSize', 'minimumSize', 'block', 'isin', 'instrumentStatus', 'issuer', 'securityDescription'] ]
+    )[ ['securityId','symbol', 'CVSAId', 'category', 'market', 'currency', 'settlPeriod', 'lotSize', 'minimumSize', 'block', 'isin', 'instrumentStatus', 'issuer', 'securityDescription', 'tickPriceId'] ]
 
     # --- Snapshot (cotizaciones) ---
     snap_token = get_token("snapshot.read")  # Token para snapshot
@@ -123,8 +123,10 @@ if __name__ == "__main__":
 
     # DataFrame final: instruments + novedades
     df_final = pd.concat([df_instr, df_novedades], ignore_index=True)
-
+    #drop securityId asi no aparece en la app
+    df_final = df_final.drop(columns=['securityId'], errors='ignore')
     # Guardar CSV
     df_final.to_csv("instrumentos.csv", index=False)
     print("CSV generado exitosamente")
+
 
