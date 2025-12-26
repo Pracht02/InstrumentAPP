@@ -32,7 +32,7 @@ df = df.rename(columns={
 
 # Reglas existentes...
 df['Segmento'] = df.apply(
-    lambda row: 'PPT' if (row['Segmento'] == 'CT' and row['Block'] == 1 and row['Tipo instrumento'] == '01-ACCIONES PRIVADAS')
+    lambda row: 'PPT' if (row['Segmento'] == 'CT' and row['Block'] == 1 and row['Tipo instrumento'] == '01-ACCIONES PRIVADAS' or row['Segmento'] == 'CT' and row['Block'] == 1 and row['Tipo instrumento'] == '23-CEDEARS')
     else 'SISTACO' if (row['Segmento'] == 'CT' and row['Block'] == 1)
     else 'PPT' if (row['Segmento'] == 'CT' and row['Block'] == 0)
     else 'SENEBI' if row['Segmento'] == 'SB'
@@ -76,6 +76,7 @@ if query:
         st.write("No encontrado")
 else:
     st.info("Ingrese Ticker, ISIN o CVSA ID para buscar")
+
 
 
 
