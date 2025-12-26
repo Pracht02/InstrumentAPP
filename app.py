@@ -10,7 +10,7 @@ import pandas as pd
 
 st.set_page_config(layout="wide")
 
-st.title("Buscador de Instrumentos BYMA")
+st.title("Buscador de especies")
 
 df = pd.read_csv("https://raw.githubusercontent.com/Pracht02/InstrumentAPP/main/instrumentos.csv")
 
@@ -76,6 +76,7 @@ if query:
         st.write("No encontrado")
 else:
     st.info("Ingrese Ticker, ISIN o CVSA ID para buscar")
+
 
 
 
