@@ -7,9 +7,7 @@ name: Update instrumentos.csv
 on:
   schedule:
     - cron: '0 13 * * 1-5'  # 10:00 ARG
-    - cron: '0 15 * * 1-5'  # 12:00 ARG
-    - cron: '0 17 * * 1-5'  # 14:00 ARG
-    - cron: '0 19 * * 1-5'  # 16:00 ARG
+    - cron: '0 18 * * 1-5'  # 15:00 ARG
   workflow_dispatch:
 
 jobs:
